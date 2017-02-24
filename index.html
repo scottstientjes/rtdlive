@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+        <html>
+
+                <head>
+
+                        <title>Where is my bus?</title>
+
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                    <meta name="description" content="Live tracking RTD buses in Denver, Colorado.  Never miss your bus again!">
+                    <meta name="keywords" content="RTD, live tracking, where is my bus, Denver, Colorado">
+                    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+                    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css' />
+                    <link href='assets/css/index.css' rel='stylesheet' type='text/css' />
+                    <script src="assets/scripts/jquery-2.2.0.min.js"></script>
+
+                        <script>
+                          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                          ga('create', 'UA-75789546-1', 'auto');
+                          ga('send', 'pageview');
+
+                        </script>
+
+                </head>
+
+        <body>
+
+                <script type="text/javascript">
+
+                        $( document ).ready(function() {
+                                var wrapper = document.getElementById('routes-wrapper');
+
+                                function getvalidroutes(callback) {
+                                        $.ajax({
+                                                url: "locations/validroutes.json",
+                                                success: function (data) {
+
+                                                        routes = data.split(',');
+
+                                                        for(var i = 0; i < routes.length; i++) {
+
+                                                                wrapper.innerHTML = wrapper.innerHTML + '<a href="routes.html?route=' + routes[i] + '" class="route">' + routes[i] + '</a>';
+
+                                                        }
+                                                }
+                                        });
+                                }
+
+                                getvalidroutes();
+
+                        });
+
+
+                </script>
+
+                <h1>Choose your route</h1>
+
+                <div id="routes-wrapper"></div>
+
+        </body>
+
+</html>
