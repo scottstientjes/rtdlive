@@ -100,11 +100,14 @@ cron.schedule('0,30 * * * * *', function(){
 			var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
 			var routes = [];
 			var jsonroutes = '{ "routes": [';
-		
+			var buscount = 0;
+			
 			feed.entity.forEach( function( entity ) {
 				
 				if( entity.vehicle.trip ){
 		
+					buscount++;
+					
 					if( routes.indexOf( entity.vehicle.trip.route_id ) == -1 ) {
 						routes.push( entity.vehicle.trip.route_id );
 					}
@@ -135,31 +138,37 @@ cron.schedule('0,30 * * * * *', function(){
 					jsonroutes = jsonroutes + '}';
 					jsonroutes = jsonroutes + '},';
 					
-					
 				}
 			
 			});
 		
-			jsonroutes = jsonroutes.substring( 0, jsonroutes.length - 1 );
-			jsonroutes = jsonroutes + ']}';
-			
-			jsonroutes = JSON.parse( jsonroutes );
-			
-			jsonroutes.routes.sort(
-				function( a, b ){
-					var sortStatus = 0;
-		 
-					if (a.route < b.route) {
-						sortStatus = -1;
-					} else if (a.route > b.route) {
-						sortStatus = 1;
-					}
-					return sortStatus;
-					
+			if( buscount ){
+
+				if( jsonroutes[ jsonroutes.length - 1 ] == ',' ){
+					jsonroutes = jsonroutes.substring( 0, jsonroutes.length - 1 );
 				}
-			);
-		
-			processdata( jsonroutes, routes );
+				
+				jsonroutes = jsonroutes + ']}';
+				
+				jsonroutes = JSON.parse( jsonroutes );
+				
+				jsonroutes.routes.sort(
+					function( a, b ){
+						var sortStatus = 0;
+			 
+						if (a.route < b.route) {
+							sortStatus = -1;
+						} else if (a.route > b.route) {
+							sortStatus = 1;
+						}
+						return sortStatus;
+						
+					}
+				);
+			
+				processdata( jsonroutes, routes );
+			
+			}
 		
 		  }
 		  
