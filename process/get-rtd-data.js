@@ -72,7 +72,9 @@ function processdata( jsonroutes, routes ){
 				
 			}
 			
-			buildpositions = buildpositions.substring( 0, buildpositions.length - 1 );
+                        if( buildpositions[ buildpositions.length - 1 ] == ',' ){
+			    buildpositions = buildpositions.substring( 0, buildpositions.length - 1 );
+			}
 			buildpositions = buildpositions + ']}}';
 			
 			fs.writeFileSync( "../locations/routes/" + routes[ r ] + '.json', buildpositions );
